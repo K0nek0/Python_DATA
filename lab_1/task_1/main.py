@@ -21,7 +21,7 @@ def find_and_copy_small_files(folder_path='.'):
 
         # Создаем папку small, если её ещё нет
         small_folder = path / 'small'
-        small_folder.mkdir(exist_ok=True)
+        small_folder.mkdir(parents=True, exist_ok=True)
 
         # Копируем все найденные файлы в папку small
         for file in small_files:
