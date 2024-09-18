@@ -16,7 +16,7 @@ def create_thumbnails(directory, extension):
 
 if __name__ == "__main__":
     if len(argv) != 2:
-        print('Usage: python main.py <file_extension>')
+        print('Usage: python main.py <file.extension>')
     else:
         file_extension = argv[1]
         create_thumbnails('.', file_extension)
