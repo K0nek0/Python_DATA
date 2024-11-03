@@ -1,0 +1,1 @@
+![screenshot](lab_conditions_7.jpg)
