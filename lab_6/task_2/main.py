@@ -19,7 +19,7 @@ def add_new_element():
     root.find("Detail").append(new_item)
     ET.indent(tree, '    ')
 
-    summ, summ, summ_rows = 0, 0, 0
+    summ, summ_rows = 0, 0
 
     for item in root.findall("Detail/Item"):
         val_1 = item.find("QNT").text.replace(",", ".")
