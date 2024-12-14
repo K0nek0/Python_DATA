@@ -1,0 +1,57 @@
+from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+
+
+def main():
+    doc = Document()
+
+    doc.add_paragraph("В микроконтроллерах ATmega, используемых на платформах Arduino, существует три вида памяти:")
+    doc.add_paragraph("Флеш-память: используется для хранения скетчей.", style="List Bullet 3")
+
+    bullet2 = doc.add_paragraph("ОЗУ (", style="List Bullet 3")
+    bullet2.add_run("SRAM").bold = True
+    bullet2.add_run(" — ")
+    bullet2.add_run("static random access memory").italic = True
+    bullet2.add_run(", статическая оперативная память с произвольным доступом): используется для хранения постоянной информации.")
+
+    doc.add_paragraph("EEPROM (энергозависимая память): используется для хранения постоянной информации.", style="List Bullet 3")
+    doc.add_paragraph("Флеш-память и EEPROM являются энергонезависимыми видами памяти (данные сохраняются при отключении питания). ОЗУ является энергозависимой памятью.")
+
+    table = doc.add_table(rows=4, cols=5)
+    
+    content = (
+            ("", "ATmega168", "ATmega328", "ATmega1280", "ATmega2560"),
+            ("Flash (1 кБ flash-памяти занят загрузчиком)", "16 Кбайт", "32 Кбайт", "128 Кбайт", "256 Кбайт"),
+            ("SRAM", "1 Кбайт", "2 Кбайт", "8 Кбайт", "8 Кбайт"),
+            ("EEPROM", "512 байт", "1024 байта", "4 Кбайт", "4 Кбайт")
+            )
+    headers = table.rows[0].cells
+
+    for i in range(5):
+        header = headers[i].add_paragraph()
+        header.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        header.add_run(content[0][i]).bold = True
+    
+    entries = table.columns[0].cells
+
+    for i in range(1, 4):
+        entry = entries[i].add_paragraph()
+        entry.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        entry.add_run(content[i][0]).bold = True
+
+    for row in range(1, 4):
+        for col in range(1, 5):
+            data = table.cell(row, col).add_paragraph()
+            data.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            data.add_run(content[row][col])
+    
+    doc.add_paragraph()
+
+    last = doc.add_paragraph()
+    last.add_run("Память EEPROM, по заявлениям производителя, обладает гарантированным жизненным циклом 100 000 операций записи/стирания и 100 лет хранения данных при температуре 25°C. Эти данные не распространяются на операции чтения данных из EEPROM — чтение данных не лимитированно. Исходя из этого, нужно проектировать свои скетчи максимально щадящими по отношению к EEPROM.").italic = True
+
+    doc.save("output.docx")
+
+
+if __name__ == "__main__":
+    main()
